@@ -1,29 +1,61 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div>
+    <BlockGrid
+      ref="game"
+      :difficulty="this.selectedDifficulty"
+      :gridSize="this.selectedGridSize"
+    />
+    <button
+      @click="resetGrid()"
+    >
+      {{ buttonText }}
+    </button>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import HelloWorld from './components/HelloWorld.vue'
+import Vue from 'vue'
+import BlockGrid from './components/BlockGrid.vue'
+import { Difficulty, GridSize } from './types/GameTypes'
 
-@Component({
-  components: {
-    HelloWorld
+interface BlockGridInterface {
+    generateGrid: () => void;
+}
+
+export default Vue.extend({
+  name: 'App',
+  components: { BlockGrid },
+  data () {
+    return {
+      selectedDifficulty: Difficulty.Easy,
+      selectedGridSize: GridSize.Large,
+      currentGame: {}
+    }
+  },
+  methods: {
+    resetGrid: function (): void {
+      // const game = this.$refs.game as BlockGridInterface
+      // game.generateGrid()
+      // const Game = Vue.extend(BlockGrid)
+      // const gameInstance = new Game({
+      //   propsData: {
+      //     difficulty: this.selectedDifficulty,
+      //     gridSize: 64
+      //   }
+      // })
+      // this.currentGame = gameInstance.$mount()
+      // const gameBox = this.$refs.game as HTMLDivElement
+      // gameBox.appendChild(gameInstance.$el)
+    }
+  },
+  computed: {
+    buttonText: function (): string {
+      return this.currentGame ? 'New game' : 'Restart'
+    }
   }
 })
-export default class App extends Vue {}
 </script>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style>
+
 </style>
